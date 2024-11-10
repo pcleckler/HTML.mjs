@@ -77,6 +77,20 @@ export class HTML {
     }
 
     /**
+     * Creates an element from the specified HTML string. Note: the element is not added to the document.
+     * @param {string} htmlString
+     * @returns {Element}
+     */
+    static CreateFromHtml(htmlString) {
+
+        let tempDiv = document.createElement('div');
+
+        tempDiv.innerHTML = htmlString.trim();
+
+        return tempDiv.firstElementChild;
+    }
+
+    /**
      * Creates an HTML element for the specified tag. Note: the element is not added to the document.
      * @param {string} tag The HTML element type (tag) to be created.
      * @param {Object.<string, object>} attributes An object whose keys will be used to set attributes of the element, such as HREF or SRC. Note that a Style attribute can be passed in as an object, but all other attributes will be handled as strings.
@@ -86,9 +100,8 @@ export class HTML {
      * @param {Object.<string, function>} events An object whose keys will be used to create event listeners for the new element.
      * @param {function} inlineModifier A callback allowing custom in-line modification of the element. One example use is to grab a reference to the specific element rather than having to create the element externally and pass it in.
      * @returns {HTMLElement}
-     * @constructor
      */
-    static Create({tag, attributes, style, properties, children, events, inlineModifier}) {
+    static Create({tag, attributes = null, style = null, properties = null, children = null, events = null, inlineModifier = null}) {
 
         const styleKey = "style";
 
@@ -159,7 +172,6 @@ export class HTML {
      * Converts a Style-rule string into an object representing Style declarations.
      * @param styleString The style-rule string containing styling declarations.
      * @returns {{}} An object representing Style declarations.
-     * @constructor
      */
     static StyleRuleToObject(styleString) {
 
