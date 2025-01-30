@@ -142,11 +142,12 @@ export class Objects {
     /**
      * Provides a copy of an object with property names (keys) sorted. Example: {z: 1, y: 2, x: 3} becomes {x: 3, y: 2, z: 1}.
      * @param {object} obj - The object to be sorted.
+     * @param {(a: string, b: string) => number} compareFn String compare function (optional)
      * @returns {{}}  - A copy of the object with properties sorted.
      */
-    static SortObject(obj) {
+    static SortObject(obj, compareFn = null) {
 
-        return Object.keys(obj).sort().reduce(
+        return Object.keys(obj).sort(compareFn).reduce(
             function (result, key) {
                 result[key] = obj[key];
                 return result;
@@ -165,4 +166,23 @@ export class Objects {
         return typeof value === 'object' && value !== null;
     }
 
+    /**
+     * Generates a unique ID
+     * @param namespace Optional namespace to provide to the ID.
+     * @description Attempts to generate a unique ID from either the crypto API or a combination of a timestamp and random string. The optional namespace helps ensure the resulting ID has more chance of being fully unique.
+     */
+    static GetUniqueId(namespace = null) {
+
+        if (namespace == null) namespace = "";
+
+        let uniqueId = null;
+
+        if (window.isSecureContext) {
+            uniqueId = crypto.randomUUID();
+        } else {
+            uniqueId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+        }
+
+        return `${namespace}${namespace.length > 0 ? "-" : ""}${uniqueId}`;
+    }
 }
